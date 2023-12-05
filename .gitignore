@@ -1,6 +1,7 @@
 # exclude any input.txt
 *input.txt
 
+tmp/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
