@@ -1,0 +1,13 @@
+{
+  "name": "advent-of-code",
+  "version": "1.0.0",
+  "description": "Advent of Code project",
+  "main": "reddit.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node reddit.js"
+  },
+  "author": "",
+  "type": "module",
+  "license": "ISC"
+}

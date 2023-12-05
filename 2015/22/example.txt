@@ -1,0 +1,4 @@
+Player: 10
+Mana: 250
+Hit Points: 13
+Damage: 8
