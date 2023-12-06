@@ -1,5 +1,6 @@
 # exclude any input.txt
 *input.txt
+*_old.py
 
 tmp/
 
