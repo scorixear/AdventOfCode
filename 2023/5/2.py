@@ -1,6 +1,7 @@
 import math
 import os, sys
 import time
+import timeit
 from typing import List
 
 class SeedMap:
@@ -74,6 +75,7 @@ class SeedMap:
             # if we didn't find a mapping, we add the remaining range
             if not found_mapping:
                 new_ranges.add(start, end)
+        # we merge the ranges, so they are non-overlapping
         return new_ranges
     def __str__(self) -> str:
         return f"{self.off} => {self.to}"
@@ -92,21 +94,46 @@ class SeedRangeList(List):
                 # if end is before range
                 if end < s:
                     # ---- start -- end -- s -- e ----
-                    # we can add this range
+                    # if previous range is right next to this range
+                    if i > 0 and self.ranges[i-1][1] == start:
+                        # we merge the two ranges
+                        self.ranges[i-1] = (self.ranges[i-1][0], end)
+                        return
+                    # else we add the range       
                     self.ranges.insert(i, (start, end))
                     return
                 # else if end is in between range
                 if end <= e:
                     # we add only until s
                     # ---- start -- s -- end -- e ----
-                    self.ranges.insert(i, (start, s))
+                    # if previous range is right next to this range
+                    if i > 0 and self.ranges[i-1][1] == start:
+                        # we merge the two ranges
+                        self.ranges[i-1] = (self.ranges[i-1][0], e)
+                        del self.ranges[i]
+                        i -= 1
+                        return
+                    # else we expand the range
+                    self.ranges[i] = (start, e)
                     return
                 # else if end is after range
-                # we add only until s
                 # ---- start -- s -- e -- end ----
-                self.ranges.insert(i, (start, s))
-                # we continue with the rest of the range
-                start = e
+                
+                # if previous range is right next to this range
+                if i > 0 and self.ranges[i-1][1] == start:
+                    # we merge the two ranges
+                    self.ranges[i-1] = (self.ranges[i-1][0], e)
+                    del self.ranges[i]
+                    i -= 1
+                    # we continue with the rest of the range
+                    start = e
+                    continue
+                else:
+                    # we expand the range
+                    self.ranges[i] = (start, e)
+                    # we continue with the rest of the range
+                    start = e
+                    continue
             # else if start is in between range
             elif start <= s <= end:
                 # if end is in between range
@@ -122,6 +149,12 @@ class SeedRangeList(List):
             # we continue with the rest of the range
             # ---- s -- e -- start -- end ----
         # if we haven't returned yet, we add the remaining range
+        # if previous range is right next to this range
+        if len(self.ranges) > 0 and self.ranges[-1][1] == start:
+            # we merge the two ranges
+            self.ranges[-1] = (self.ranges[-1][0], end)
+            return
+        # else we add the range
         self.ranges.append((start, end))
     def __iter__(self):
         return iter(self.ranges)
@@ -172,15 +205,17 @@ def main():
     
     # for each mapping
     for seed_map in seed_maps:
-        print(seed_map)
         # map all seed ranges to new destination
         seeds = seed_map.get_destination(seeds)
     
     # print the minimum location, which will be the start of a range
-    print(min([start for start, _ in seeds]))
+    print(min(start for start, _ in seeds))
             
 
 if __name__ == "__main__":
+    
     before = time.perf_counter()
     main()
     print(f"Time: {time.perf_counter() - before:.6f} seconds")
+    # total_time = timeit.timeit(main, number=500)
+    # print(f"Average time: {total_time/500:.6f} seconds")
