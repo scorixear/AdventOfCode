@@ -1,6 +1,6 @@
 import os,sys
 
-with open(os.path.join(sys.path[0], "example2"), "r", encoding="utf-8") as f:
+with open(os.path.join(sys.path[0], "input.txt"), "r", encoding="utf-8") as f:
     lines = f.read().splitlines(keepends=False)
 result = 0
 digits = { "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9}

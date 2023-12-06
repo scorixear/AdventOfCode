@@ -7,17 +7,10 @@ def main():
         lines = text.split("\n")
     t = int("".join(lines[0].split(":")[1].strip().split()))
     distance = int("".join(lines[1].split(":")[1].strip().split()))
-    first_winning = t
-    for i in range(t):
+    for i in range(1,t):
         if i * (t-i) > distance:
-            first_winning = i
+            print(t - i*2 + 1)
             break
-    last_winning = 0
-    for i in range(t-1, -1, -1):
-        if i * (t-i) > distance:
-            last_winning = i
-            break
-    print(last_winning - first_winning + 1)
 
 if __name__ == "__main__":
     before = time.perf_counter()

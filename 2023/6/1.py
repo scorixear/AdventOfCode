@@ -9,18 +9,10 @@ def main():
     distances = [int(x) for x in lines[1].split(":")[1].strip().split()]
     result = 1
     for t, distance in zip(times, distances):
-        first_winning = t
-        for i in range(t):
+        for i in range(1, t):
             if i * (t-i) > distance:
-                first_winning = i
+                result *= t - 2*i  +1
                 break
-        last_winning = 0
-        for i in range(t-1, -1, -1):
-            if i * (t-i) > distance:
-                last_winning = i
-                break
-        #print(first_winning, last_winning, last_winning - first_winning + 1)
-        result *= last_winning - first_winning + 1
     print(result)
 
 if __name__ == "__main__":
