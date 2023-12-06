@@ -1,5 +1,5 @@
 import os, sys
-with open(os.path.join(sys.path[0], "input"), "r", encoding="utf-8") as f:
+with open(os.path.join(sys.path[0], "input.txt"), "r", encoding="utf-8") as f:
     lines = f.read().splitlines(keepends=False)
 result = 0
 for line in lines:

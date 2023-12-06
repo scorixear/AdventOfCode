@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        ".env.sample": "properties",
+        "*.job": "shellscript",
+        "iosfwd": "cpp"
+    }
+}

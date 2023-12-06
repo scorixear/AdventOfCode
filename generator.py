@@ -1,6 +1,6 @@
 import os
 
-YEAR = "2017"
+YEAR = "2023"
 for day in range(1, 26):
     if os.path.isdir(os.path.join(YEAR, str(day))):
         continue
