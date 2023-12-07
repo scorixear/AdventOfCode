@@ -1,7 +1,7 @@
 import os, sys
 
 
-with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
+with open(os.path.join(sys.path[0],"roy.txt"), "r", encoding="utf-8") as f:
     text = f.read().strip()
     lines = text.split("\n")
     result = 0
@@ -21,5 +21,6 @@ with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
                     green = max(green, count)
                 elif ball == "blue":
                     blue = max(blue, count)
+        print(red, green, blue)
         result += red*green*blue
     print(result)

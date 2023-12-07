@@ -1,4 +1,3 @@
-import math
 import os, sys
 import time
 import timeit
@@ -140,7 +139,7 @@ class SeedRangeList(List):
                 if end <= e:
                     # we already have this range
                     # ---- s -- start -- end -- e ----
-                   return
+                    return
                 # else if end is after this range
                 # we continue with the rest of the range
                 # ---- s -- start -- e -- end ----
