@@ -38,7 +38,7 @@ class NodeCycle:
         return self.current_cycle
 
 
-def get_cycle_counters(starting_node: str, instructions: str, nodes: dict[str, tuple[str, str]]):
+def get_node_cycles(starting_node: str, instructions: str, nodes: dict[str, tuple[str, str]]):
     """Generates NodeCycle objects
 
     Args:
@@ -136,41 +136,14 @@ def gcd(a: int, b: int) -> int:
 def lcm(a: int, b: int) -> int:
     return a * b // gcd(a, b)
 
-def main():
-    with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
-        text = f.read().strip()
-    lines = text.split("\n")
-    instructions = lines[0]
-    
-    nodes = {}
-    starting_nodes: set[str] = set()
-    for line in lines[2:]:
-        node, neighbours = line.split(" = ", 1)
-        neighbours = neighbours.split(", ")
-        nodes[node] = (neighbours[0][1:], neighbours[1][:-1])
-        if node.endswith("A"):
-            starting_nodes.add(node)
-    
-    # given the assumptions of get_cycle_lengths()
-    # we can simplify the problem to finding the cycle length of each starting node
-    # by computing the lcm of each cycle length
-    # cycle_lengths = []
-    # for starting_node in starting_nodes:
-    #     cycle_lengths.append(get_cycle_length(starting_node, instructions, nodes))
-    
-    # current_lcm = 1
-    # for cycle_length in cycle_lengths:
-    #     current_lcm = lcm(current_lcm, cycle_length)
-    # print(current_lcm)
-    # return;    
-    
+def brute_force(starting_nodes: set[str], instructions: str, nodes: dict[str, tuple[str, str]]):
     # with no assumptions
     # this code runs around 100_000 iterations of the while loop
     # in 0.14s, time estimate will be around 51 minutes until completion
     # since final target is around 22_000_000_000_000 and we increase by 1_000_000_000 each iteration
     cycles: list[NodeCycle] = []
     for starting_node in starting_nodes:
-        cycles.append(get_cycle_counters(starting_node, instructions, nodes))
+        cycles.append(get_node_cycles(starting_node, instructions, nodes))
     # get the first cycle length
     cycle_lengths = [cycle.get_next_cycle() for cycle in cycles]
     # and count distinct cycle lengths
@@ -184,7 +157,7 @@ def main():
         min_cycle = min(cycle_length_sets)
         max_cycle = max(cycle_length_sets)
         # only for debugging
-        if (print_counter % 100000 == 0):
+        if (print_counter % 10_000_000 == 0):
             print_counter = 0
             print(f"Min Cycle: {min_cycle}, time: {time.perf_counter() - current_time:.6f}s")
             current_time = time.perf_counter()
@@ -202,6 +175,37 @@ def main():
         # update distinct cycle lengths
         cycle_length_sets = set(cycle_lengths)
     print(cycle_lengths.pop())
+
+def lcm_approach(starting_nodes: set[str], instructions: str, nodes: dict[str, tuple[str, str]]):
+    # given the assumptions of get_cycle_lengths()
+    # we can simplify the problem to finding the cycle length of each starting node
+    # by computing the lcm of each cycle length
+    cycle_lengths = []
+    for starting_node in starting_nodes:
+        cycle_lengths.append(get_cycle_length(starting_node, instructions, nodes))
+    
+    current_lcm = 1
+    for cycle_length in cycle_lengths:
+        current_lcm = lcm(current_lcm, cycle_length)
+    print(current_lcm)
+
+def main():
+    with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
+        text = f.read().strip()
+    lines = text.split("\n")
+    instructions = lines[0]
+    
+    nodes = {}
+    starting_nodes: set[str] = set()
+    for line in lines[2:]:
+        node, neighbours = line.split(" = ", 1)
+        neighbours = neighbours.split(", ")
+        nodes[node] = (neighbours[0][1:], neighbours[1][:-1])
+        if node.endswith("A"):
+            starting_nodes.add(node)
+    
+    brute_force(starting_nodes, instructions, nodes)
+    
 
 if __name__ == "__main__":
     before = time.perf_counter()
