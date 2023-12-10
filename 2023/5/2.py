@@ -1,7 +1,7 @@
 import os, sys
 import time
 import timeit
-from typing import List
+from RangeClasses import SortedRangeList
 
 class SeedMap:
     def __init__(self, off: str, to: str):
@@ -16,8 +16,8 @@ class SeedMap:
         self.map_values.append((source, source + offset, target))
     def sort(self):
         self.map_values.sort(key=lambda x: x[0])
-    def get_destination(self, ranges: "SeedRangeList"):
-        new_ranges = SeedRangeList()
+    def get_destination(self, ranges: SortedRangeList) -> SortedRangeList:
+        new_ranges = SortedRangeList()
         # for each range of seeds
         for start, end in ranges:
             # if we fully mapped the range, we can continue with next range
@@ -81,88 +81,6 @@ class SeedMap:
     def __repr__(self) -> str:
         return self.__str__()
 
-class SeedRangeList(List):
-    def __init__(self):
-        # start inclusive, end exclusive
-        self.ranges: list[tuple[int, int]] = []
-    def add(self, start: int, end: int):
-        # for each already added range
-        for i, (s, e) in enumerate(self.ranges):
-            # if start is before range
-            if start < s:
-                # if end is before range
-                if end < s:
-                    # ---- start -- end -- s -- e ----
-                    # if previous range is right next to this range
-                    if i > 0 and self.ranges[i-1][1] == start:
-                        # we merge the two ranges
-                        self.ranges[i-1] = (self.ranges[i-1][0], end)
-                        return
-                    # else we add the range       
-                    self.ranges.insert(i, (start, end))
-                    return
-                # else if end is in between range
-                if end <= e:
-                    # we add only until s
-                    # ---- start -- s -- end -- e ----
-                    # if previous range is right next to this range
-                    if i > 0 and self.ranges[i-1][1] == start:
-                        # we merge the two ranges
-                        self.ranges[i-1] = (self.ranges[i-1][0], e)
-                        del self.ranges[i]
-                        i -= 1
-                        return
-                    # else we expand the range
-                    self.ranges[i] = (start, e)
-                    return
-                # else if end is after range
-                # ---- start -- s -- e -- end ----
-                
-                # if previous range is right next to this range
-                if i > 0 and self.ranges[i-1][1] == start:
-                    # we merge the two ranges
-                    self.ranges[i-1] = (self.ranges[i-1][0], e)
-                    del self.ranges[i]
-                    i -= 1
-                    # we continue with the rest of the range
-                    start = e
-                    continue
-                else:
-                    # we expand the range
-                    self.ranges[i] = (start, e)
-                    # we continue with the rest of the range
-                    start = e
-                    continue
-            # else if start is in between range
-            elif start <= s <= end:
-                # if end is in between range
-                if end <= e:
-                    # we already have this range
-                    # ---- s -- start -- end -- e ----
-                    return
-                # else if end is after this range
-                # we continue with the rest of the range
-                # ---- s -- start -- e -- end ----
-                start = e
-            # else if start is after range
-            # we continue with the rest of the range
-            # ---- s -- e -- start -- end ----
-        # if we haven't returned yet, we add the remaining range
-        # if previous range is right next to this range
-        if len(self.ranges) > 0 and self.ranges[-1][1] == start:
-            # we merge the two ranges
-            self.ranges[-1] = (self.ranges[-1][0], end)
-            return
-        # else we add the range
-        self.ranges.append((start, end))
-    def __iter__(self):
-        return iter(self.ranges)
-    def __str__(self) -> str:
-        return str(self.ranges)
-    def __repr__(self) -> str:
-        return self.__str__()
-
-
 def main():
     with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
         text = f.read().strip()
@@ -171,7 +89,7 @@ def main():
     # example input "seeds: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14"
     seed_range = lines[0].split(": ")[1].split(" ")
     # example output ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", ...]
-    seeds = SeedRangeList()
+    seeds = SortedRangeList()
     # for each pair of seed inputs
     for i in range(0, len(seed_range), 2):
         # add the range to the list
