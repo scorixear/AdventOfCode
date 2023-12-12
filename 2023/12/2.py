@@ -1,21 +1,6 @@
 import os, sys
 import time
 
-def check_configuration(decided_unkowns, configuration, numbers):
-    current_index = 0
-    current_block = 0
-    for i,c in enumerate(configuration):
-        if c == "." or (c == "?" and decided_unkowns[i] == "."):
-            if current_block == numbers[current_index]:
-                current_block = 0
-                current_index += 1
-            else:
-                return False
-        elif c == "#" or (c == "?" and decided_unkowns[i] == "#"):
-            current_block += 1
-    return (current_block == numbers[current_index] and current_index == len(numbers) - 1) or (current_block == 0 and current_index == len(numbers))
-
-
 class SpringConfig:
     def __init__(self, numbers: list[int], configuration: str) -> None:
         self.numbers = numbers
