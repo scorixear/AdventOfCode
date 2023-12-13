@@ -1,10 +1,68 @@
 import os, sys
 import time
 
+def transpose(grid):
+    new_grid = []
+    for i in range(len(grid[0])):
+        new_grid.append("".join([row[i] for row in grid]))
+    return new_grid
+
+def find_vertical_reflection(grid, vertical):
+    grid = transpose(grid)
+    return find_horizontal_reflection(grid, vertical)
+
+def find_horizontal_reflection(grid, horizontal):
+    for i in range(1, len(grid)):
+        is_match = True
+        for j in range(1,i+1):
+            if i+j-1 >= len(grid):
+                break
+            if grid[i+j-1] != grid[i-j]:
+                is_match = False
+                break
+        if is_match and i != horizontal:
+            return i
+    return 0
+        
+
 def main():
     with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
         text = f.read().strip()
         lines = text.split("\n")
+    grids: list[list[str]] = []
+    current_grid = []
+    for line in lines:
+        if line == "":
+            grids.append(current_grid)
+            current_grid = []
+        else:
+            current_grid.append(line)
+    grids.append(current_grid)
+    count = 0
+    for grid in grids:
+        found_smudge = False
+        
+        vertical = find_vertical_reflection(grid, 0)
+        horizontal = 0
+        if vertical == 0:
+            horizontal = find_horizontal_reflection(grid, 0)
+        for i, row in enumerate(grid):
+            for j, cell in enumerate(row):
+                new_grid = [r if y != i else row[:j] + ("#" if cell == "." else ".") + row[j+1:] for y, r in enumerate(grid)]
+                result = find_vertical_reflection(new_grid, vertical)
+                if result == 0:
+                    result = find_horizontal_reflection(new_grid, horizontal)
+                    if result != 0:
+                        count += 100*result
+                        found_smudge = True
+                        break
+                elif result != vertical:
+                    count += result
+                    found_smudge = True
+                    break
+            if found_smudge:
+                break
+    print(count)
 
 if __name__ == "__main__":
     before = time.perf_counter()
