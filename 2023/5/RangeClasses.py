@@ -103,7 +103,7 @@ class SortedRangeList(List):
         self.ranges.append((range_start, range_end))
     @override
     def __str__(self) -> str:
-        return str(self.ranges)
+        return "["+", ".join([f"({s}, {e-s})" for s, e in self.ranges])+"]"
     @override
     def __repr__(self) -> str:
         return repr(self.ranges)

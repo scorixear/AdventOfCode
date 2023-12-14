@@ -82,7 +82,7 @@ class SeedMap:
         return self.__str__()
 
 def main():
-    with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
+    with open(os.path.join(sys.path[0],"example.txt"), "r", encoding="utf-8") as f:
         text = f.read().strip()
     lines = text.split("\n")
     # split seeds
@@ -124,6 +124,7 @@ def main():
     for seed_map in seed_maps:
         # map all seed ranges to new destination
         seeds = seed_map.get_destination(seeds)
+        print(seeds)
     
     # print the minimum location, which will be the start of a range
     print(min(start for start, _ in seeds))
