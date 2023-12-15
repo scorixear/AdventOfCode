@@ -1,10 +1,15 @@
 import os, sys
 import time
+import timeit
+from typing import Iterable
 
-class HashMap:
-    def __init__(self, size: int = 256):
+class StringHashMap:
+    def __init__(self, elements: Iterable[tuple[str, int]]=None, size: int = 256):
         self.size = size
-        self.table: list[list[tuple[str, int]]] = [[] for _ in range(size)]
+        self.table: list[list[tuple[str, int]]] = [list[tuple[str, int]]() for _ in range(size)]
+        if elements is not None:
+            for elem in elements:
+                self.add_or_set(elem[0], elem[1])
     def add_or_set(self, key: str, value: int):
         # get the bucket
         curr_hash = self._hash(key)
@@ -44,11 +49,11 @@ class HashMap:
             curr *= 17
             curr %= self.size
         return curr
-def main():
+def main(do_print: bool = False):
     with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
         text = f.read().strip()
     sequences = text.split(",")
-    lenses = HashMap()
+    lenses = StringHashMap()
     # for each sequence given
     for sequence in sequences:
         # if sequence is a removal
@@ -58,9 +63,13 @@ def main():
         # else add or set the focus power at that label
         else:
             lenses.add_or_set(sequence.split("=")[0], int(sequence.split("=")[1]))
-    print(lenses.get_focus_power())
+    result = lenses.get_focus_power()
+    if do_print:
+        print(result)
 
 if __name__ == "__main__":
     before = time.perf_counter()
-    main()
+    main(True)
     print(f"Time: {time.perf_counter() - before:.6f}s")
+    
+    print(f"Avg: {timeit.timeit(main, number=1000)/1000:.6f}s")
