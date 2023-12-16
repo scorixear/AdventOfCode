@@ -1,5 +1,6 @@
 import os, sys
 import time
+import timeit
 
 class Light:
     def __init__(self, x, y, dx, dy):
@@ -106,3 +107,5 @@ if __name__ == "__main__":
     before = time.perf_counter()
     main()
     print(f"Time: {time.perf_counter() - before:.6f}s")
+    
+    print(f"Avg: {timeit.timeit(main, number=100)/100:.6f}")
