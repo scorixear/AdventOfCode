@@ -1,6 +1,5 @@
 import os, sys
 import time
-from typing import override
 
 class Light:
     def __init__(self, x, y, dx, dy):
@@ -62,14 +61,12 @@ class Light:
             return [self, Light(self.x, self.y, 0, -1)]
         return []
     
-    @override
     def __hash__(self):
         return hash((self.x, self.y, self.dx, self.dy))
     
-    @override
     def __str__(self) -> str:
         return f"({self.x}, {self.y}, {self.dx}, {self.dy})"
-    @override
+    
     def __repr__(self) -> str:
         return str(self)
     
