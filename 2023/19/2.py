@@ -7,13 +7,22 @@ class Workflow:
         self.rules: list[tuple[str, bool, int, str]] = steps
     
     def apply_value(self, operation: str, threshold: int, low: int, high: int):
+        # depending on the operation
         if operation == ">":
+            # the range that applies to the rule
+            # will be the range that is greater than the threshold
             low = max(low, threshold+1)
         elif operation == "<":
+            # the range that applies to the rule
+            # will be the range that is less than the threshold
             high = min(high, threshold)
         elif operation == ">=":
+            # the range that applies to the rule
+            # will be the range that is greater than or equal to the threshold
             low = max(low, threshold)
         else:
+            # the range that applies to the rule
+            # will be the range that is less than or equal to the threshold
             high = min(high, threshold+1)
         return low, high
     
