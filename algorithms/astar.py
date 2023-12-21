@@ -16,7 +16,7 @@ class AStar(Generic[T]):
         self.graph = graph
         self.cost_func = cost_func
         self.neighbour_func = neighbour_func
-        self.heriustic_func = heuristic_func
+        self.heuristic_func = heuristic_func
         self.n = len(graph)
         self.m = len(graph[0])
         self.previous: dict[tuple[int, int], tuple[int, int]] = {}
@@ -38,7 +38,7 @@ class AStar(Generic[T]):
                 new_cost = self.costs[current] + self.cost_func(current, neighbour)
                 if neighbour not in self.costs or new_cost < self.costs[neighbour]:
                     self.costs[neighbour] = new_cost
-                    priority = new_cost + self.heriustic_func(neighbour)
+                    priority = new_cost + self.heuristic_func(neighbour)
                     heapq.heappush(queue, [priority, neighbour])
                     self.previous[neighbour] = current
     def get_cost(self, end: tuple[int, int]) -> int:
