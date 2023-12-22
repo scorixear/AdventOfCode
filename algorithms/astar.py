@@ -1,28 +1,25 @@
 import heapq
-from typing import Callable, Generic, TypeVar
+from typing import Callable, Generic, Hashable, TypeVar
 
 T = TypeVar("T", int, float)
-
-class AStar(Generic[T]):
+H = TypeVar("H", bound=Hashable)
+class AStar(Generic[T, H]):
     """Provides a generic A* algorithm implementation.
 
     Args:
         Generic (int | float): The cost and heuristic return type.
     """
-    def __init__(self, graph: list[list], 
-                 neighbour_func: Callable[[tuple[int, int]], list[tuple[int, int]]],
-                 cost_func: Callable[[tuple[int, int], tuple[int,int]], T],
-                 heuristic_func: Callable[[tuple[int, int]], T]):
-        self.graph = graph
+    def __init__(self,
+                 neighbour_func: Callable[[H], list[H]],
+                 cost_func: Callable[[H, H], T],
+                 heuristic_func: Callable[[H], T]):
         self.cost_func = cost_func
         self.neighbour_func = neighbour_func
         self.heuristic_func = heuristic_func
-        self.n = len(graph)
-        self.m = len(graph[0])
-        self.previous: dict[tuple[int, int], tuple[int, int]] = {}
-        self.costs: dict[tuple[int, int], int] = {}
+        self.previous: dict[H, H] = {}
+        self.costs: dict[H, T] = {}
     
-    def find_path(self, start: tuple[int, int], end: tuple[int, int]):
+    def find_path(self, start: H, end: H):
         queue = []
         queue.append([0,start])
         self.previous = {}
@@ -41,9 +38,9 @@ class AStar(Generic[T]):
                     priority = new_cost + self.heuristic_func(neighbour)
                     heapq.heappush(queue, [priority, neighbour])
                     self.previous[neighbour] = current
-    def get_cost(self, end: tuple[int, int]) -> int:
+    def get_cost(self, end: H) -> T:
         return self.costs[end]
-    def get_path(self, end: tuple[int, int]) -> list[tuple[int, int]]:
+    def get_path(self, end: H) -> list[H]:
         path = []
         current = end
         while current:
