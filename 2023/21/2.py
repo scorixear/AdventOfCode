@@ -43,10 +43,15 @@ def bfs(grid: list[list[str]], start: tuple[int, int], max_steps: int):
             factor_index += 1
             # if we have all three factors, we can calculate the quadratic formula
             if factor_index == 3:
-                # the factors are actually the differences between the number of reached positions
+                # the factors are actually the rate of change of the number of reached positions
+                # therefore, a is linearly the increase from 0 to n//2
+                # b is the rate of change from n//2 to n+n//2
+                # and c must be the rate of change of the rate of change, meaning (f2 - f1) - (f1 - f0)
                 a, b, c = factors[0], factors[1]-factors[0], factors[2]-2*factors[1]+factors[0]
                 # x represents the number of grids added
                 # therefore x = max_steps//n
+                # this isn't x^2, but rather x * (x-1) / 2, since x^2 would be the number of positions reached
+                # when moving diagonally, which is not the case
                 return a + b*(max_steps//n) + c * ((max_steps//n) * ((max_steps//n) - 1) // 2)
     # if we didn't reach the quadratic formula, we can't calculate the number of reached positions
     return -1
