@@ -3,5 +3,7 @@
         ".env.sample": "properties",
         "*.job": "shellscript",
         "iosfwd": "cpp"
-    }
+    },
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic"
 }
