@@ -15,8 +15,8 @@ The structure of each puzzle day is the same: an `example.txt` file containing t
 Following this, there will be `README` files for each day containing solution explanations.
 The original Puzzle descriptions as well as actual input files can all be found on the [Advent of Code](https://adventofcode.com/) website.
 
-That's it for now, I hope this repository can help you understand problems better or even help you solve them.
+That's it for now, I hope this repository might help you with some of the puzzles.
 
 # Puzzle Solutions
 ## 2023
-- [Day 1: Word Mangel](2023/01/README.md)
+- [Day 1: Word Mangle](2023/1/README.md)
