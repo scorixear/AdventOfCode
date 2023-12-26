@@ -1,11 +1,11 @@
 from collections import defaultdict
 import os, sys
+import time
 
-
-with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
-    text = f.read().strip()
-    lines = text.split("\n")
-    
+def main():
+    with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
+        text = f.read().strip()
+        lines = text.split("\n")
     # this will hold the coordinates of the gears
     # and their values around them
     gears: dict[tuple[int, int], list[int]] = defaultdict(list)
@@ -68,9 +68,15 @@ with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
                     gears[(x,y)].append(int(current_number))
     result = 0
     # for each gear
-    for key, values in gears.items():
+    for _, values in gears.items():
         # if the gear has exactly two values around it
         if len(values) == 2:
             # add the product of the two values to the result
             result += values[0] * values[1]
     print(result)
+
+
+if __name__ == "__main__":
+  before = time.perf_counter()
+  main()
+  print(f"Time: {time.perf_counter() - before:.6f}s")
