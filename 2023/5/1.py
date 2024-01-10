@@ -1,6 +1,7 @@
 import math
 import os, sys
 import time
+from typing import Optional
 
 class SeedMap:
     def __init__(self, off: str, to: str):
@@ -37,7 +38,7 @@ def main():
     seeds = [int(s) for s in lines[0].split(": ")[1].split(" ")]
     # create seed maps
     seed_maps: list[SeedMap] = []
-    current_map = None
+    current_map: Optional[SeedMap] = None
     # for each other line except 1st line
     for line in lines[1:]:
         # skip empty lines
@@ -52,6 +53,8 @@ def main():
             # and add it to the list
             seed_maps.append(current_map)
         else:
+            if(current_map is None):
+                raise Exception("No map declaration")
             # if not new map declaration, add the mapping
             # the * will unpack the list into 3 arguments
             current_map.add(*[int(s) for s in line.split(" ")])

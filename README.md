@@ -20,3 +20,7 @@ That's it for now, I hope this repository might help you with some of the puzzle
 # Puzzle Solutions
 ## 2023
 - [Day 1: Word Mangle](2023/1/README.md)
+- [Day 2: Balls](2023/2/README.md)
+- [Day 3: Gear Hell](2023/3/README.md)
+- [Day 4: Scratching an Itch](2023/4/README.md)
+- [Day 5: Mapping Slapping](2023/5/README.md)

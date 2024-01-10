@@ -1,4 +1,4 @@
-from typing import Iterable, List, Tuple, override
+from typing import Iterable, List, Optional, Tuple, override
 
 class SortedRangeList(List):
     """Represents a list of ranges.
@@ -7,7 +7,7 @@ class SortedRangeList(List):
         List (_type_): _description_
     """
 
-    def __init__(self, ranges: Iterable[Tuple[int, int]] = None):
+    def __init__(self, ranges: Optional[Iterable[Tuple[int, int]]] = None):
         """Initializes the list of ranges.
         
         Args:
@@ -157,15 +157,6 @@ class SortedRangeList(List):
     @override
     def __hash__(self):
         return hash(self.ranges)
-    @override
-    def __copy__(self):
-        return SortedRangeList(self.ranges.copy())
-    @override
-    def __bool__(self):
-        return bool(self.ranges)
-    @override
-    def __bytes__(self):
-        return bytes(self.ranges)
     @override
     def __format__(self, format_spec):
         return format(self.ranges, format_spec)

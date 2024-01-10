@@ -79,3 +79,53 @@ Differently now, we save the found symbols around each number and after reading 
 
 If it is a star, we save this number for this star.
 After reading in all numbers, we iterate over each star symbol and check if it has exactly two numbers adjacent.
+
+```python
+        # symbols recorded around the digit
+        # symbols are recorded as a tuple of (symbol, x, y)
+        # I use a set to avoid duplicate entries (because multiple digits can be around the same symbol)
+        adjacent_symbols = set()
+        # for each character in the line
+        for j, c in enumerate(line):
+            ... digit reading above ...
+            # if we read in a symbol or a dot
+            # the current number is finished reading in
+            # and if it even has symbols around it
+            # and a number is read in at all (to avoid unneeded reassignments)
+            elif len(adjacent_symbols) != 0 and current_number != "":
+                # for each symbol around the digit
+                for symbol, x, y in adjacent_symbols:
+                    # if the symbol is a gear
+                    if symbol == "*":
+                        # add the current number to the list of values around the gear
+                        gears[(x,y)].append(int(current_number))
+                # reset the flags
+                adjacent_symbols = set()
+                current_number = ""
+            # if we read in a symbol or a dot
+            # the current number is finished reading in
+            # but it has no symbols around it
+            else:
+                # reset the flags
+                adjacent_symbols = set()
+                current_number = ""
+        # if the line is finished with a digit
+        # the above loop will not add it to the result
+        # therefore we check here if the current number has symbols around it
+        # and if it even has a number read in (to avoid unneeded reassignments)
+        if len(adjacent_symbols) != 0 and current_number != "":
+            # for each symbol around the digit
+            for symbol, x, y in adjacent_symbols:
+                # if the symbol is a gear
+                if symbol == "*":
+                    # add the current number to the list of values around the gear
+                    gears[(x,y)].append(int(current_number))
+    result = 0
+    # for each gear
+    for _, values in gears.items():
+        # if the gear has exactly two values around it
+        if len(values) == 2:
+            # add the product of the two values to the result
+            result += values[0] * values[1]
+    print(result)
+```

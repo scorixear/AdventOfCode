@@ -112,6 +112,8 @@ def main():
             # and add it to the list
             seed_maps.append(current_map)
         else:
+            if(current_map is None):
+                raise Exception("No map declaration")
             # if not new map declaration, add the mapping
             current_map.add(*[int(s) for s in line.split(" ")])
     # we sort seed map ranges, so they are ascending
