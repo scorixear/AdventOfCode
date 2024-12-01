@@ -2,15 +2,17 @@ import os
 
 YEAR = "2024"
 for day in range(1, 26):
-    if os.path.isdir(os.path.join(YEAR, str(day))):
-        continue
-    os.mkdir(os.path.join(YEAR, str(day)))
-    with open(os.path.join(YEAR, str(day), "input.txt"), "w") as f:
-        pass
-    with open(os.path.join(YEAR, str(day), "example.txt"), "w") as f:
-        pass
-    with open(os.path.join(YEAR, str(day), "1.py"), "w") as f:
-        f.write("""import os, sys
+    if not os.path.isdir(os.path.join(YEAR, str(day))):
+        os.mkdir(os.path.join(YEAR, str(day)))
+    if not os.path.isfile(os.path.join(YEAR, str(day), "input.txt")):
+        with open(os.path.join(YEAR, str(day), "input.txt"), "w", encoding="UTF-8") as f:
+            pass
+    if not os.path.isfile(os.path.join(YEAR, str(day), "example.txt")):
+        with open(os.path.join(YEAR, str(day), "example.txt"), "w", encoding="UTF-8") as f:
+            pass
+    if not os.path.isfile(os.path.join(YEAR, str(day), "1.py")):
+        with open(os.path.join(YEAR, str(day), "1.py"), "w", encoding="UTF-8") as f:
+            f.write("""import os, sys
 import time
 
 def main():
@@ -23,8 +25,9 @@ if __name__ == "__main__":
     main()
     print(f"Time: {time.perf_counter() - before:.6f}s")
 """)
-    with open(os.path.join(YEAR, str(day), "2.py"), "w") as f:
-        f.write("""import os, sys
+    if not os.path.isfile(os.path.join(YEAR, str(day), "2.py")):
+        with open(os.path.join(YEAR, str(day), "2.py"), "w", encoding="UTF-8") as f:
+            f.write("""import os, sys
 import time
 
 def main():
