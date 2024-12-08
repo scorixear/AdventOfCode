@@ -31,7 +31,7 @@ def main():
 def find_antinodes(ant1: tuple[int, int], ant2: tuple[int, int], width: int, height: int) -> set[tuple[int, int]]:
     dist = (ant1[0] - ant2[0], ant1[1] - ant2[1])
     gcd = math.gcd(dist[0], dist[1])
-    normalized = (dist[0] // gcd, dist[1] // gcd)
+    dist = (dist[0] // gcd, dist[1] // gcd)
     
     coords: set[tuple[int, int]] = set([ant1, ant2])
     # step in the direction of vector normalized
