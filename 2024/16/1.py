@@ -1,7 +1,7 @@
 import os, sys
 import time
 import enum
-from dijkstra1 import Dijkstra
+from dijkstra2 import Dijkstra
 
 class Direction(enum.Enum):
     UP = 0
@@ -37,8 +37,8 @@ def main():
                    cost_func,
                    0.0, float("inf"))
     min_cost = float("inf")
+    dij.find_path(start)
     for end in ends:
-        dij.find_path(start, end)
         min_cost = min(min_cost, dij.get_cost(end))
     print(int(min_cost))
 
