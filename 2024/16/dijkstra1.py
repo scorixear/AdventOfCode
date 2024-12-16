@@ -15,12 +15,14 @@ class Dijkstra(Generic[T, H]):
     def __init__(self,
                  neighbour_func: Callable[[H], list[H]],
                  cost_func: Callable[[H, H], T],
-                 min_cost: T):
+                 min_cost: T,
+                 max_cost: T):
         self.cost_func = cost_func
         self.neighbour_func = neighbour_func
         self.previous: dict[H, H | None] = {}
         self.costs: dict[H, T] = {}
         self.min_cost = min_cost
+        self.max_cost = max_cost
     def find_path(self, start: H, end: H):
         queue = []
         queue.append([0,start])
@@ -39,6 +41,8 @@ class Dijkstra(Generic[T, H]):
                     heapq.heappush(queue, [new_cost, neighbour])
                     self.previous[neighbour] = current
     def get_cost(self, end: H) -> T:
+        if end not in self.costs:
+            return self.max_cost
         return self.costs[end]
     def get_path(self, end: H) -> list[H]:
         path = []
