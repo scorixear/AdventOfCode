@@ -82,7 +82,7 @@ def main():
             runner = Program(i * (8**current_index) + A, B, C, programm)
             output = runner.run()
             # test current digit
-            # only the current output digit and earlier digits will have changed
+            # only the current output digit and digits to the left will have changed
             # so no need to check the whole output array
             if output[current_index] != programm[current_index]:
                 continue
@@ -99,10 +99,10 @@ def main():
             digits[current_index + 1] = 0
             # reset the previous start for the current digit
             previous_start[current_index] = 0
-            # and backtrack to the previous digit
+            # and backtrack to the previous digit to the right
             current_index += 1
         # if we found a valid digit
-        # move to the next digit
+        # move to the next digit to the left
         else:
             current_index -= 1
     # calculate the final number
