@@ -24,7 +24,7 @@ def neighbour(node: tuple[int, int], grid: list[list[bool]]):
         if 0 <= nx < len(grid[0]) and 0 <= ny < len(grid) and not grid[nx][ny]:
             neighbours.append((nx, ny))
     return neighbours
-def cost(node1: tuple[int, int], node2: tuple[int, int]):
+def cost(_: tuple[int, int], _1: tuple[int, int]):
     return 1
 
 if __name__ == "__main__":

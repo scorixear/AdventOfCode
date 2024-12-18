@@ -10,18 +10,22 @@ def main():
     end = (70, 70)
     grid = [[False for _ in range(71)] for _ in range(71)]
     
-    counter = 0
+    for line in lines:
+        x, y = map(int, line.split(","))
+        grid[x][y] = True
+    
+    counter = len(lines) - 1
     while counter < len(lines):
         x, y = map(int, lines[counter].split(","))
-        grid[x][y] = True
+        grid[x][y] = False
         dijkstra = Dijkstra(lambda node: neighbour(node, grid), cost, 0)
         dijkstra.find_path(start, end)
         total_cost = dijkstra.get_cost(end)
-        if total_cost == 0:
-            print(x, y)
+        if total_cost != 0:
+            print(f"{x},{y}")
             print(counter+1)
             break
-        counter += 1
+        counter -= 1
     
 def neighbour(node: tuple[int, int], grid: list[list[bool]]):
     x, y = node
@@ -31,7 +35,7 @@ def neighbour(node: tuple[int, int], grid: list[list[bool]]):
         if 0 <= nx < len(grid[0]) and 0 <= ny < len(grid) and not grid[nx][ny]:
             neighbours.append((nx, ny))
     return neighbours
-def cost(node1: tuple[int, int], node2: tuple[int, int]):
+def cost(_: tuple[int, int], _1: tuple[int, int]):
     return 1
 
 if __name__ == "__main__":
