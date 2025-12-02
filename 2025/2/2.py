@@ -11,15 +11,15 @@ def main():
     for a, b in ranges:
         for n in range(a, b + 1):
             strn = str(n)
-            for mod in range(2, len(strn) + 1):
-                if len(strn) % mod == 0:
-                    part_len = len(strn) // mod
-                    parts = [
-                        strn[i * part_len : (i + 1) * part_len] for i in range(mod)
-                    ]
-                    if all(p == parts[0] for p in parts):
-                        total += n
+            strn_len = len(strn)
+            for sub in range(1, strn_len // 2 + 1):
+                part = strn[:sub]
+                for i in range(sub, strn_len, sub):
+                    if strn[i : i + sub] != part:
                         break
+                else:
+                    total += n
+                    break
     print(total)
 
 
