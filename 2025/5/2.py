@@ -1,10 +1,46 @@
 import os, sys
 import time
 
+
 def main():
-    with open(os.path.join(sys.path[0],"input.txt"), "r", encoding="utf-8") as f:
+    with open(os.path.join(sys.path[0], "input.txt"), "r", encoding="utf-8") as f:
         text = f.read().strip()
         lines = text.split("\n")
+    ranges = []
+    total = 0
+    for line in lines:
+        if line == "":
+            break
+        parts = line.split("-")
+        sorted_insert(ranges, int(parts[0]), int(parts[1]))
+    ranges = merge_ranges(ranges)
+    for s, e in ranges:
+        total += e - s
+    print(total)
+
+
+def merge_ranges(ranges: list[tuple[int, int]]):
+    result = []
+    for start, end in ranges:
+        if not result:
+            result.append((start, end))
+            continue
+        last_start, last_end = result[-1]
+        if start <= last_end:
+            result[-1] = (min(last_start, start), max(last_end, end))
+        else:
+            result.append((start, end))
+    return result
+
+
+def sorted_insert(ranges: list[tuple[int, int]], start: int, inclusive_end: int):
+    end = inclusive_end + 1
+    for i, (s, _) in enumerate(ranges):
+        if start < s:
+            ranges.insert(i, (start, end))
+            return
+    ranges.append((start, end))
+
 
 if __name__ == "__main__":
     before = time.perf_counter()
